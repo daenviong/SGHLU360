@@ -1,7 +1,7 @@
-import gui.LoginGUI;
+import gui.VentanaPrincipal;
 
 public class SGHLU {
     public static void main(String[] args) {
-        new LoginGUI();
+        new VentanaPrincipal();
     }
 }
