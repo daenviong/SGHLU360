@@ -23,9 +23,9 @@ public class LoginGUI extends JFrame {
                 String codigo = campoCodigo.getText();
                 if (!nombre.isEmpty() && !codigo.isEmpty()) {
                     Estudiante est = new Estudiante(nombre, codigo);
-                    ManejadorArchivos.guardarEstudiante("resources/estudiantes.csv", est.getInfo());
+                    ManejadorArchivos.guardarLinea("resources/estudiantes.csv", est.getInfoCSV());
                     dispose();
-                    new MenuPrincipal(est).setVisible(true);
+                    new InterfazPrincipal(est);
                 } else {
                     JOptionPane.showMessageDialog(null, "Campos vacíos.");
                 }
