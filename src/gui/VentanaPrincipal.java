@@ -1,61 +1,79 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class VentanaPrincipal extends JFrame {
     public VentanaPrincipal() {
         setTitle("SGHLU - Sistema de Gestión de Horas Libres UNAB");
-        setSize(600, 400);
+        setSize(700, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
         JMenuBar barraMenu = new JMenuBar();
 
+        // Menú Archivo
+        JMenu menuArchivo = new JMenu("Archivo");
+        JMenuItem itemInicio = new JMenuItem("Inicio");
+        JMenuItem itemSalir = new JMenuItem("Salir");
+        itemSalir.addActionListener(e -> System.exit(0));
+        menuArchivo.add(itemInicio);
+        menuArchivo.addSeparator();
+        menuArchivo.add(itemSalir);
+
         // Menú Estudiantes
-        JMenu menuEstudiante = new JMenu("Estudiantes");
-        JMenuItem itemRegistrarEst = new JMenuItem("Registrar estudiante");
+        JMenu menuEstudiantes = new JMenu("Estudiantes");
+        JMenuItem itemRegistrarEst = new JMenuItem("➕ Registrar estudiante");
         itemRegistrarEst.addActionListener(e -> new VentanaRegistroEstudiante());
-        JMenuItem itemVerEst = new JMenuItem("Ver estudiantes");
+        JMenuItem itemVerEst = new JMenuItem("📋 Ver estudiantes");
         itemVerEst.addActionListener(e -> new VentanaVerEstudiantes());
-        menuEstudiante.add(itemRegistrarEst);
-        menuEstudiante.add(itemVerEst);
+        JMenuItem itemHistorial = new JMenuItem("🧾 Ver historial de inscripciones");
+        itemHistorial.addActionListener(e -> new VentanaVerHistorial());
+        menuEstudiantes.add(itemRegistrarEst);
+        menuEstudiantes.add(itemVerEst);
+        menuEstudiantes.addSeparator();
+        menuEstudiantes.add(itemHistorial);
 
         // Menú Eventos
         JMenu menuEventos = new JMenu("Eventos");
-        JMenuItem itemCrearEvento = new JMenuItem("Crear evento");
+        JMenuItem itemCrearEvento = new JMenuItem("➕ Crear evento");
         itemCrearEvento.addActionListener(e -> new VentanaCrearEvento());
-        JMenuItem itemVerEventos = new JMenuItem("Ver e inscribirse");
+        JMenuItem itemVerEventos = new JMenuItem("📅 Ver e inscribirse");
         itemVerEventos.addActionListener(e -> new VentanaEventos());
-        JMenuItem itemInscritos = new JMenuItem("Ver inscritos por evento");
+        JMenuItem itemInscritos = new JMenuItem("👥 Ver inscritos por evento");
         itemInscritos.addActionListener(e -> new VentanaVerInscritos());
         menuEventos.add(itemCrearEvento);
         menuEventos.add(itemVerEventos);
+        menuEventos.addSeparator();
         menuEventos.add(itemInscritos);
 
         // Menú Reportes
         JMenu menuReportes = new JMenu("Reportes");
-        JMenuItem itemVerHistorial = new JMenuItem("Ver inscripciones por estudiante");
-        itemVerHistorial.addActionListener(e -> new VentanaVerHistorial());
-        JMenuItem itemExportarCSV = new JMenuItem("Exportar a CSV");
-        itemExportarCSV.addActionListener(e -> new VentanaExportarCSV());
-        menuReportes.add(itemVerHistorial);
-        menuReportes.add(itemExportarCSV);
+        JMenuItem itemExportar = new JMenuItem("⬇️ Exportar reporte a CSV");
+        itemExportar.addActionListener(e -> new VentanaExportarCSV());
+        menuReportes.add(itemExportar);
 
-        // Menú Sistema
-        JMenu menuSistema = new JMenu("Sistema");
-        JMenuItem itemSalir = new JMenuItem("Salir");
-        itemSalir.addActionListener(e -> System.exit(0));
-        menuSistema.add(itemSalir);
-
-        // Agregar todos los menús
-        barraMenu.add(menuEstudiante);
+        barraMenu.add(menuArchivo);
+        barraMenu.add(menuEstudiantes);
         barraMenu.add(menuEventos);
         barraMenu.add(menuReportes);
-        barraMenu.add(menuSistema);
         setJMenuBar(barraMenu);
 
-        JLabel bienvenida = new JLabel("Bienvenido a SGHLU", SwingConstants.CENTER);
-        add(bienvenida);
+        // Logo y bienvenida
+        ImageIcon icono = new ImageIcon("resources/logo.png");
+        JLabel logo = new JLabel(icono);
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel mensaje = new JLabel("Bienvenido al Sistema SGHLU", SwingConstants.CENTER);
+        mensaje.setFont(new Font("SansSerif", Font.BOLD, 18));
+        mensaje.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        JPanel panelCentro = new JPanel(new BorderLayout());
+        panelCentro.add(logo, BorderLayout.NORTH);
+        panelCentro.add(mensaje, BorderLayout.CENTER);
+
+        add(panelCentro, BorderLayout.CENTER);
 
         setVisible(true);
     }
