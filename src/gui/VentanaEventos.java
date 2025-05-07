@@ -1,73 +1,73 @@
 package gui;
 
 import javax.swing.*;
-import java.sql.*;
-import persistencia.ConexionBD;
+import javax.swing.table.*;
+import java.awt.*;
 
 public class VentanaEventos extends JFrame {
     public VentanaEventos() {
-        setTitle("Eventos disponibles");
-        setSize(450, 300);
+        setTitle("Ver e Inscribirse a Eventos");
+        setSize(700, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        DefaultListModel<String> modelo = new DefaultListModel<>();
-        JList<String> lista = new JList<>(modelo);
-        JScrollPane scroll = new JScrollPane(lista);
-        JTextField campoCodigo = new JTextField(10);
+        // Panel superior con campo de código
+        JPanel panelSuperior = new JPanel(new FlowLayout());
+        panelSuperior.setBackground(Color.WHITE);
+        JLabel lblCodigo = new JLabel("Código del estudiante:");
+        JTextField campoCodigo = new JTextField("2024101001", 15);
         JButton btnInscribir = new JButton("Inscribirse");
+        btnInscribir.setBackground(new Color(255, 102, 0));
+        btnInscribir.setForeground(Color.WHITE);
+        btnInscribir.setFocusPainted(false);
+        panelSuperior.add(lblCodigo);
+        panelSuperior.add(campoCodigo);
+        panelSuperior.add(btnInscribir);
 
-        try (Connection conn = ConexionBD.conectar()) {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM eventos");
-            while (rs.next()) {
-                modelo.addElement(rs.getInt("id") + " - " + rs.getString("nombre") + " (" + rs.getInt("horas") + "h)");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error cargando eventos: " + e.getMessage());
-        }
+        // Tabla de eventos
+        String[] columnas = {"ID", "Evento", "Tipo", "Fecha", "Horas"};
+        String[][] datos = {
+            {"1", "Taller de Robótica", "Tecnología", "2025-05-10", "2"},
+            {"2", "Club de Lectura", "Académico", "2025-05-11", "1"},
+            {"3", "Charla de Innovación", "Tecnología", "2025-05-12", "2"},
+            {"4", "Hackathon UNAB", "Competencia", "2025-05-13", "4"},
+            {"5", "Cine Foro", "Cultural", "2025-05-14", "1"},
+            {"6", "Feria de Ciencias", "Tecnología", "2025-05-15", "3"},
+            {"7", "Expo Proyectos", "Académico", "2025-05-16", "2"},
+            {"8", "Concurso de Ensayo", "Humanidades", "2025-05-17", "1"},
+            {"9", "Torneo de Ajedrez", "Deportivo", "2025-05-18", "2"},
+            {"10", "Encuentro de Liderazgo", "Desarrollo", "2025-05-19", "2"}
+        };
+
+        JTable tabla = new JTable(datos, columnas);
+        tabla.setRowHeight(28);
+        tabla.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        tabla.setSelectionBackground(new Color(255, 204, 153));
+        JTableHeader header = tabla.getTableHeader();
+        header.setFont(new Font("SansSerif", Font.BOLD, 14));
+        header.setBackground(new Color(255, 102, 0));
+        header.setForeground(Color.WHITE);
+
+        JScrollPane scroll = new JScrollPane(tabla);
+        scroll.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         btnInscribir.addActionListener(e -> {
-            String seleccion = lista.getSelectedValue();
-            String codigo = campoCodigo.getText();
-            if (seleccion != null && !codigo.isEmpty()) {
-                int idEvento = Integer.parseInt(seleccion.split(" - ")[0]);
-                try (Connection conn = ConexionBD.conectar()) {
-                    PreparedStatement pstEst = conn.prepareStatement("SELECT id FROM estudiantes WHERE codigo=?");
-                    pstEst.setString(1, codigo);
-                    ResultSet rs = pstEst.executeQuery();
-                    if (rs.next()) {
-                        int idEst = rs.getInt("id");
-
-                        PreparedStatement ins = conn.prepareStatement("INSERT INTO inscripciones(estudiante_id, evento_id) VALUES (?, ?)");
-                        ins.setInt(1, idEst);
-                        ins.setInt(2, idEvento);
-                        ins.executeUpdate();
-
-                        PreparedStatement pstH = conn.prepareStatement("UPDATE estudiantes SET horas = horas + (SELECT horas FROM eventos WHERE id=?) WHERE id=?");
-                        pstH.setInt(1, idEvento);
-                        pstH.setInt(2, idEst);
-                        pstH.executeUpdate();
-
-                        JOptionPane.showMessageDialog(null, "Inscripción exitosa.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Estudiante no encontrado.");
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Error al inscribir: " + ex.getMessage());
-                }
+            String codigo = campoCodigo.getText().trim();
+            int fila = tabla.getSelectedRow();
+            if (codigo.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ingrese el código del estudiante.");
+            } else if (fila == -1) {
+                JOptionPane.showMessageDialog(null, "Seleccione un evento.");
             } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un evento y escriba su código.");
+                String evento = tabla.getValueAt(fila, 1).toString();
+                JOptionPane.showMessageDialog(null, "Inscripción exitosa al evento: " + evento);
             }
         });
 
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Código estudiante:"));
-        panel.add(campoCodigo);
-        panel.add(btnInscribir);
-
-        add(scroll, "Center");
-        add(panel, "South");
+        add(panelSuperior, BorderLayout.NORTH);
+        add(scroll, BorderLayout.CENTER);
+        getContentPane().setBackground(Color.WHITE);
         setVisible(true);
     }
 }

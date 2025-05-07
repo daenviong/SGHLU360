@@ -6,7 +6,7 @@ import java.awt.*;
 public class VentanaPrincipal extends JFrame {
     public VentanaPrincipal() {
         setTitle("SGHLU - Sistema de Gestión de Horas Libres UNAB");
-        setSize(700, 450);
+        setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -24,11 +24,11 @@ public class VentanaPrincipal extends JFrame {
 
         // Menú Estudiantes
         JMenu menuEstudiantes = new JMenu("Estudiantes");
-        JMenuItem itemRegistrarEst = new JMenuItem("➕ Registrar estudiante");
+        JMenuItem itemRegistrarEst = new JMenuItem("Registrar estudiante");
         itemRegistrarEst.addActionListener(e -> new VentanaRegistroEstudiante());
-        JMenuItem itemVerEst = new JMenuItem("📋 Ver estudiantes");
+        JMenuItem itemVerEst = new JMenuItem("Ver estudiantes");
         itemVerEst.addActionListener(e -> new VentanaVerEstudiantes());
-        JMenuItem itemHistorial = new JMenuItem("🧾 Ver historial de inscripciones");
+        JMenuItem itemHistorial = new JMenuItem("Ver historial de inscripciones");
         itemHistorial.addActionListener(e -> new VentanaVerHistorial());
         menuEstudiantes.add(itemRegistrarEst);
         menuEstudiantes.add(itemVerEst);
@@ -37,11 +37,11 @@ public class VentanaPrincipal extends JFrame {
 
         // Menú Eventos
         JMenu menuEventos = new JMenu("Eventos");
-        JMenuItem itemCrearEvento = new JMenuItem("➕ Crear evento");
+        JMenuItem itemCrearEvento = new JMenuItem("Crear evento");
         itemCrearEvento.addActionListener(e -> new VentanaCrearEvento());
-        JMenuItem itemVerEventos = new JMenuItem("📅 Ver e inscribirse");
+        JMenuItem itemVerEventos = new JMenuItem("Ver e inscribirse");
         itemVerEventos.addActionListener(e -> new VentanaEventos());
-        JMenuItem itemInscritos = new JMenuItem("👥 Ver inscritos por evento");
+        JMenuItem itemInscritos = new JMenuItem("Ver inscritos por evento");
         itemInscritos.addActionListener(e -> new VentanaVerInscritos());
         menuEventos.add(itemCrearEvento);
         menuEventos.add(itemVerEventos);
@@ -50,17 +50,37 @@ public class VentanaPrincipal extends JFrame {
 
         // Menú Reportes
         JMenu menuReportes = new JMenu("Reportes");
-        JMenuItem itemExportar = new JMenuItem("⬇️ Exportar reporte a CSV");
-        itemExportar.addActionListener(e -> new VentanaExportarCSV());
-        menuReportes.add(itemExportar);
+        JMenuItem itemReporteCSV = new JMenuItem("Exportar a CSV");
+        itemReporteCSV.addActionListener(e -> new VentanaExportarCSV());
+        JMenuItem itemReporteFechas = new JMenuItem("Ver inscripciones por fechas");
+        itemReporteFechas.addActionListener(e -> new VentanaReportePorFechas());
+        JMenuItem itemHorasAcumuladas = new JMenuItem("Horas acumuladas por estudiante");
+        itemHorasAcumuladas.addActionListener(e -> new VentanaHorasAcumuladas());
+        menuReportes.add(itemReporteCSV);
+        menuReportes.addSeparator();
+        menuReportes.add(itemReporteFechas);
+        menuReportes.add(itemHorasAcumuladas);
+
+        // Menú Ayuda
+        JMenu menuAyuda = new JMenu("Ayuda");
+        JMenuItem itemAcerca = new JMenuItem("Acerca de SGHLU");
+        itemAcerca.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this,
+                "SGHLU - Sistema de Gestión de Horas Libres UNAB\n" +
+                "Versión: 1.0\n" +
+                "Desarrollado por SGHLU Corporation",
+                "Acerca de SGHLU",
+                JOptionPane.INFORMATION_MESSAGE);
+        });
+        menuAyuda.add(itemAcerca);
 
         barraMenu.add(menuArchivo);
         barraMenu.add(menuEstudiantes);
         barraMenu.add(menuEventos);
         barraMenu.add(menuReportes);
+        barraMenu.add(menuAyuda);
         setJMenuBar(barraMenu);
 
-        // Logo y bienvenida
         ImageIcon icono = new ImageIcon("resources/logo.png");
         JLabel logo = new JLabel(icono);
         logo.setHorizontalAlignment(SwingConstants.CENTER);

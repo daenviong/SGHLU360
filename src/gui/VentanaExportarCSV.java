@@ -1,10 +1,8 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.Color; // ✅ IMPORTANTE
 import java.io.*;
-import java.sql.*;
-import persistencia.ConexionBD;
+import java.awt.*;
 
 public class VentanaExportarCSV extends JFrame {
     public VentanaExportarCSV() {
@@ -24,20 +22,17 @@ public class VentanaExportarCSV extends JFrame {
         exportar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         exportar.addActionListener(e -> {
-            try (Connection conn = ConexionBD.conectar();
-                 PrintWriter writer = new PrintWriter(new FileWriter("reporte_sghlu.csv"))) {
+            try (PrintWriter writer = new PrintWriter(new FileWriter("exportado_sghlu.csv"))) {
                 writer.println("Nombre,Código,Horas,Evento,Fecha");
-                String sql = "SELECT est.nombre, est.codigo, est.horas, e.nombre AS evento, e.fecha " +
-                             "FROM inscripciones i JOIN estudiantes est ON est.id = i.estudiante_id " +
-                             "JOIN eventos e ON e.id = i.evento_id";
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    writer.printf("%s,%s,%d,%s,%s%n",
-                        rs.getString("nombre"), rs.getString("codigo"),
-                        rs.getInt("horas"), rs.getString("evento"), rs.getDate("fecha"));
+                String[][] datos = {
+                    {"Laura Díaz", "2024101001", "6", "Taller de Robótica", "2025-05-01"},
+                    {"Juan Ríos", "2024101002", "5", "Hackathon UNAB", "2025-05-04"},
+                    {"Ana Gómez", "2024101003", "3", "Cine Foro", "2025-05-08"}
+                };
+                for (String[] fila : datos) {
+                    writer.printf("%s,%s,%s,%s,%s%n", fila[0], fila[1], fila[2], fila[3], fila[4]);
                 }
-                JOptionPane.showMessageDialog(null, "Reporte exportado como reporte_sghlu.csv");
+                JOptionPane.showMessageDialog(null, "Archivo 'exportado_sghlu.csv' exportado con éxito.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al exportar: " + ex.getMessage());
             }
