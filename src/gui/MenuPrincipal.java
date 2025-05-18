@@ -1,19 +1,35 @@
-package gui;
-
 import javax.swing.*;
-import modelo.Estudiante;
+import java.awt.*;
 
 public class MenuPrincipal extends JFrame {
-    public MenuPrincipal(Estudiante est) {
-        setTitle("SGHLU - Menú Principal");
-        setSize(400, 300);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+    public MenuPrincipal() {
+        setTitle("SGHLU - Sistema de Gestión de Horas Libres UNAB");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JTextArea area = new JTextArea();
-        area.setText("Bienvenido " + est.getNombre() + "\n\n"
-                   + "Código: " + est.getCodigo() + "\n"
-                   + "Horas acumuladas: " + est.getHorasAcumuladas());
-        add(area);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuInicio = new JMenu("Inicio de Sesión");
+
+        JMenuItem itemEstudiante = new JMenuItem("Estudiante");
+        JMenuItem itemDocente = new JMenuItem("Docente");
+
+        itemEstudiante.addActionListener(e -> new VentanaLoginEstudiante().setVisible(true));
+        itemDocente.addActionListener(e -> new VentanaLoginDocente().setVisible(true));
+
+        menuInicio.add(itemEstudiante);
+        menuInicio.add(itemDocente);
+        menuBar.add(menuInicio);
+
+        setJMenuBar(menuBar);
+
+        JLabel bienvenida = new JLabel("Bienvenido a SGHLU", SwingConstants.CENTER);
+        bienvenida.setFont(new Font("Arial", Font.BOLD, 24));
+        add(bienvenida, BorderLayout.CENTER);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MenuPrincipal().setVisible(true));
     }
 }

@@ -85,7 +85,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel logo = new JLabel(icono);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel mensaje = new JLabel("Bienvenido al Sistema SGHLU", SwingConstants.CENTER);
+        JLabel mensaje = new JLabel("BIenvenido al Sistema SGHLU", SwingConstants.CENTER);
         mensaje.setFont(new Font("SansSerif", Font.BOLD, 18));
         mensaje.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
