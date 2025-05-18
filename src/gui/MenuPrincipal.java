@@ -1,5 +1,9 @@
+package gui;
+
 import javax.swing.*;
 import java.awt.*;
+import gui.VentanaLoginEstudiante;
+import gui.VentanaLoginDocente;
 
 public class MenuPrincipal extends JFrame {
 
@@ -13,9 +17,9 @@ public class MenuPrincipal extends JFrame {
         JMenu menuInicio = new JMenu("Inicio de Sesión");
 
         JMenuItem itemEstudiante = new JMenuItem("Estudiante");
-        JMenuItem itemDocente = new JMenuItem("Docente");
-
         itemEstudiante.addActionListener(e -> new VentanaLoginEstudiante().setVisible(true));
+
+        JMenuItem itemDocente = new JMenuItem("Docente");
         itemDocente.addActionListener(e -> new VentanaLoginDocente().setVisible(true));
 
         menuInicio.add(itemEstudiante);
