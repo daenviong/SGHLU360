@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import gui.VentanaLoginEstudiante;
+import gui.VentanaLoginDocente;
 
 public class VentanaPrincipal extends JFrame {
     public VentanaPrincipal() {
