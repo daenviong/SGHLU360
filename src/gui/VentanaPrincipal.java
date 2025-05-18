@@ -85,7 +85,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel logo = new JLabel(icono);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel mensaje = new JLabel("BIenvenido al Sistema SGHLU", SwingConstants.CENTER);
+        JLabel mensaje = new JLabel("Bienvenido al Sistema SGHLU", SwingConstants.CENTER);
         mensaje.setFont(new Font("SansSerif", Font.BOLD, 18));
         mensaje.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
@@ -97,4 +97,29 @@ public class VentanaPrincipal extends JFrame {
 
         setVisible(true);
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            String[] opciones = {"Estudiante", "Docente"};
+            int seleccion = JOptionPane.showOptionDialog(
+                null,
+                "¿Cómo deseas iniciar sesión?",
+                "Inicio de Sesión",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+            );
+
+            if (seleccion == 0) {
+                new VentanaLoginEstudiante().setVisible(true);
+            } else if (seleccion == 1) {
+                new VentanaLoginDocente().setVisible(true);
+            } else {
+                System.exit(0);
+            }
+        });
+    }
+
 }
