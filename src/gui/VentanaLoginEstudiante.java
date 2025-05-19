@@ -10,21 +10,28 @@ public class VentanaLoginEstudiante extends JFrame {
 
     public VentanaLoginEstudiante() {
         setTitle("Login Estudiante");
-        setSize(400, 250);
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        // Logo centrado
+        JLabel logo = new JLabel();
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
+        try {
+            ImageIcon icono = new ImageIcon("resources/logo.png");
+            Image imagen = icono.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            logo.setIcon(new ImageIcon(imagen));
+        } catch (Exception e) {
+            logo.setText("Login Estudiante");
+        }
+        add(logo, BorderLayout.NORTH);
 
         JPanel panelPrincipal = new JPanel(new GridBagLayout());
         panelPrincipal.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        JLabel lblTitulo = new JLabel("Inicio de Sesión - Estudiante", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(0, 102, 153));
-        add(lblTitulo, BorderLayout.NORTH);
 
         JLabel lblCorreo = new JLabel("Correo:");
         campoCorreo = new JTextField(20);
@@ -57,7 +64,7 @@ public class VentanaLoginEstudiante extends JFrame {
             String clave = new String(campoContrasena.getPassword()).trim();
             if (autenticarEstudiante(correo, clave)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.");
-                new VentanaEstudiante(correo).setVisible(true);
+                new VentanaPanelEstudiante(correo).setVisible(true);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Credenciales incorrectas.");
